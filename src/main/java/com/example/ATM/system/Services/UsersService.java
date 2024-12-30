@@ -10,6 +10,7 @@ import com.example.ATM.system.Repository.UsersRepository;
 public class UsersService {
     @Autowired
     private UsersRepository usersRepository;
+    
     public Double getBalance(String AccountNumber){
         Users users = usersRepository.findByAccountNumber(AccountNumber);
         return users.getBalance(); 
