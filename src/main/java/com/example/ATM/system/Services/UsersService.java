@@ -15,4 +15,13 @@ public class UsersService {
         Users users = usersRepository.findByAccountNumber(AccountNumber);
         return users.getBalance(); 
     }
+    public void withdraw(String accountNumber, Double amount){
+        Users users = usersRepository.findByAccountNumber(accountNumber);
+        if(users==null){
+            System.out.println("Account not found");
+        }
+        Double oldBalance = users.getBalance();
+        users.setBalance(oldBalance-amount);
+        usersRepository.save(users);
+    }   
 }

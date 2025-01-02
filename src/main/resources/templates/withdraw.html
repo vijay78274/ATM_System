@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link th:href="@{/css/withdraw.css}" rel="stylesheet">
+    <script th:src="@{/javascript/withdraw.js}"></script>
+</head>
+<body>
+    <div class="main-container">
+        <div class="screen">
+            <div class="container">
+                <input type="text" id="numberInput" class="input-box" placeholder="Enter amount" readonly>
+            <div class="button-container">
+                <button onclick="appendNumber(9)">9</button>
+                <button onclick="appendNumber(8)">8</button>
+                <button onclick="appendNumber(7)">7</button>
+                <button onclick="appendNumber(6)">6</button>
+                <button onclick="appendNumber(5)">5</button>
+                <button onclick="appendNumber(4)">4</button>
+                <button onclick="appendNumber(3)">3</button>
+                <button onclick="appendNumber(2)">2</button>
+                <button onclick="appendNumber(1)">1</button>
+                <button class="key" onclick="clearInput()">C</button>
+                <button onclick="appendNumber(0)">0</button>
+                <button class="key" onclick="deleteLast()">⌫</button>
+            </div>
+            </div>
+            <div class="withdraw">
+                <meta name="_csrf" th:content="${_csrf.token}" />
+                <div class="text">Confirm the funds you want to withdraw</div>
+                <button class="transfer" onclick="sendAmount()">withdraw</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

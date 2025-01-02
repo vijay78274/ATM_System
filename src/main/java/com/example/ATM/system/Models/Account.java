@@ -6,10 +6,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "Account")
 public class Account {
     @Id
-    @Column(name = "AccountNumber",unique = true, nullable = false)
+    @Column(name = "accountNumber",unique = true, nullable = false)
     private String accountNumber;
     @Column(name = "pin")
     private String pin;
@@ -17,8 +17,8 @@ public class Account {
     private String name;
     @Column(name = "email")
     private String email;
-    @Column(name = "balance")
-    private Double balance;
+    // @Column(name = "balance")
+    // private Double balance;
     public String getAccountNumber() {
         return accountNumber;
     }
@@ -37,12 +37,12 @@ public class Account {
     public void setEmail(String email) {
         this.email = email;
     }
-    public Double getBalance() {
-        return balance;
-    }
-    public void setBalance(Double balance) {
-        this.balance = balance;
-    }
+    // public Double getBalance() {
+    //     return balance;
+    // }
+    // public void setBalance(Double balance) {
+    //     this.balance = balance;
+    // }
     public String getPin() {
         return pin;
     }
