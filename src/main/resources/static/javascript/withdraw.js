@@ -32,10 +32,20 @@ async function sendAmount() {
             },
             body: JSON.stringify({ amount: number })
         });
+    
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error('Withdrawal failed: ' + errorText);
+        }
 
-        const result = await response.text();
-        alert(result);
-        inputField.value = ''; 
+        const data = await response.json();
+        if (data.status === 'success') {
+            // Redirect to the receipt page with query parameters
+            const redirectUrl = `/atm/main/withdraw/receipt?amount=${data.amount}&accountNumber=${data.accountNumber}&transactionId=${data.transactionId}&transactionDate=${data.transactionDate}&status=${data.status}`;
+            window.location.href = redirectUrl;
+        } else {
+            alert('Withdrawal failed: ' + data.message);
+        }
     } catch (error) {
         console.error('Error sending number:', error);
         alert('Failed to send number to the server.');

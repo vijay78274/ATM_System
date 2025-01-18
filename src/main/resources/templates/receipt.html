@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Transaction Receipt</title>
+        <link rel="stylesheet" th:href="@{/css/receipt.css}" href="/css/receipt.css">
+        <script th:src="@{/javascript/receipt.js}" src="/javascript/receipt.js"></script>
+    </head>
+<body>
+    <div class="receipt-container">
+        <h1>Transaction Receipt</h1>
+        <p><strong>Transaction Type:</strong> Withdrawal</p>
+        <p><strong>Account Number:</strong> <span th:text="${accountNumber}"></span></p>
+        <p><strong>Status:</strong> <span th:text="${status}"></span></p>
+        <p><strong>Amount:</strong> <span th:text="${amount}"></span></p>
+        <p><strong>Transaction Date:</strong> <span th:text="${transactionDate}"></span></p>
+        <p><strong>Transaction ID:</strong> <span th:text="${transactionId}"></span></p>
+    </div>
+    <!-- <div class="button-container">
+        <div class="download" onclick="onDivClick()">
+        </div>
+    </div> -->
+    <a th:href="@{/atm/main/withdraw/receipt/download(status=${status}, amount=${amount}, accountNumber=${accountNumber}, transactionId=${transactionId}, transactionDate=${transactionDate})}">Download</a>
+</body>
+</html>
