@@ -3,9 +3,9 @@ package com.example.ATM.system.Services;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import com.example.ATM.system.Controller.AccountController;
 import com.example.ATM.system.Models.Account;
 import com.example.ATM.system.Models.Users;
 import com.example.ATM.system.Repository.AccountRepository;
@@ -14,10 +14,11 @@ import com.example.ATM.system.Repository.UsersRepository;
 @Service
 public class AccountService {
     @Autowired 
-    AccountRepository repository;
+    private AccountRepository repository;
     @Autowired
     UsersRepository repository2;
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     
     public Account createAccount(String pin, String name, String email, Double balance) {
         Account account = new Account();

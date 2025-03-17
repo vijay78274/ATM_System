@@ -59,6 +59,7 @@ public class UsersController {
         String transactionId = "TXN" + UUID.randomUUID().toString().substring(0, 8);
         Map<String, String> response = new HashMap<>();
         if(balance>amount && balance>0){
+            usersService.withdraw(username, amount);
             response.put("status", "success");
         }
         else{
@@ -84,27 +85,51 @@ public class UsersController {
         model.addAttribute("transactionDate", transactionDate);
         return "receipt"; 
     }
-    @GetMapping("/main/withdraw/receipt/download")
-    public ResponseEntity<byte[]> downloadReceipt(@RequestParam String status,@RequestParam String amount,
-    @RequestParam String accountNumber,
-    @RequestParam String transactionId,
-    @RequestParam String transactionDate) throws IOException{
-        // byte[] pdfBytes = usersService.generateReceipt(accountNumber, amount, transactionDate, status, transactionId);
-        Context context = new Context();
-        context.setVariable("status", status);
-        context.setVariable("amount", amount);
-        context.setVariable("accountNumber", accountNumber);
-        context.setVariable("transactionId", transactionId);
-        context.setVariable("transactionDate", transactionDate);
-
-        String htmlContent = templateEngine.process("receipt", context);
-        // Render Thymeleaf template to HTML
-        byte[] pdfBytes = usersService.generatePdfFromHtml(htmlContent);
-
-        // Return the PDF as a downloadable response
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=receipt.pdf")
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(pdfBytes);
+    @GetMapping("main/transfer")
+    public String getMethodName() {
+        return "transfer";
     }
+    @PostMapping("main/transfer")
+    public ResponseEntity<Map<String,String>> postMethodName(@RequestBody Map<String,Object> request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String fromAccount = authentication.getName();
+        double senderBalance = usersService.getBalance(fromAccount);
+        System.out.println("From account number: "+fromAccount);
+        String toAccount = request.get("toAccount").toString();
+        double recieverBalance = usersService.getBalance(toAccount);
+        System.out.println("To account number: "+toAccount);
+        String time = java.time.LocalDate.now().toString();
+        double amount = Double.parseDouble(request.get("amount").toString());
+        String transactionId = "TXN" + UUID.randomUUID().toString().substring(0, 8);
+        Map<String, String> response = new HashMap<>();
+        if(senderBalance>amount && senderBalance>0){
+            usersService.transfer(fromAccount, toAccount, amount);
+            response.put("status", "success");
+        }
+        else{
+            response.put("status", "Failed! Insufficient Balance");
+        }
+        response.put("fromAccount", fromAccount);
+        response.put("toAccount", toAccount);
+        response.put("amount", String.valueOf(amount));
+        response.put("transactionId", transactionId);
+        response.put("transactionDate", time);
+        return ResponseEntity.ok(response);
+    }
+    @GetMapping("/main/transfer/receipt")
+    public String transferReceipt(@RequestParam String status,@RequestParam String amount,
+    @RequestParam String fromAccount,
+    @RequestParam String toAccount,
+    @RequestParam String transactionId,
+    @RequestParam String transactionDate,Model model) {
+        // System.out.println("Flash Attributes: " + model.asMap());
+        model.addAttribute("status", status);
+        model.addAttribute("amount", amount);
+        model.addAttribute("fromAccount", fromAccount);
+        model.addAttribute("toAccount", toAccount);
+        model.addAttribute("transactionId", transactionId);
+        model.addAttribute("transactionDate", transactionDate);
+        return "transfer_receipt"; 
+    }
+    
 }

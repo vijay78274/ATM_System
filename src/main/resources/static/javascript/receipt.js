@@ -1,14 +1,13 @@
-function onDivClick() {
-    alert("Div clicked!");
-    const basePath = "/atm/main/withdraw";
-    const url = `${basePath}/receipt/download`;
-    // Example: Send a request to the server using Fetch API
-    fetch(url,{
-        method: 'GET'
-    })
-    .then(response => response.text())
-    .then(result => {
-        console.log("Operation result:", result);
-    })
-    .catch(error => console.error("Error:", error));
+function onDivClick(){
+    console.log("div clicked")
+    const invoice = document.getElementById("receipt")
+    console.log(invoice)
+    const options = {
+        margin: 1,
+        filename: 'transaction_receipt.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().set(options).from(invoice).save()
 }

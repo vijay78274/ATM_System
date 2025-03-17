@@ -15,7 +15,7 @@ import com.example.ATM.system.Services.AccountService;
 @RequestMapping("/atm")
 public class AccountController {
     @Autowired
-    AccountService service;
+    private AccountService service;
 
     @PostMapping("/create")
     public ResponseEntity<Account> createAccount(@RequestParam String pin, @RequestParam String name, @RequestParam String email, @RequestParam Double balance){

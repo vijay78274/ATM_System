@@ -1,4 +1,3 @@
-
 function appendNumber(number) {
     const input = document.getElementById('numberInput');
     input.value += number;
@@ -18,34 +17,40 @@ async function sendAmount() {
     const csrfToken = document.querySelector('meta[name="_csrf"]').content;
     const inputField = document.getElementById('numberInput');
     const number = inputField.value;
+    const toAccountInputField = document.getElementById('toAccount');
+    const toAccountNumber = toAccountInputField.value;
 
     if (number === '') {
         alert('Please enter a number.');
         return;
     }
+    if(toAccountNumber==' '){
+        alert('please enter a accountNumber.');
+        return;
+    }
 
     try {
-        const response = await fetch('/atm/main/withdraw', {
+        const response = await fetch('/atm/main/transfer', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': csrfToken 
             },
-            body: JSON.stringify({ amount: number })
+            body: JSON.stringify({ amount: number, toAccount: toAccountNumber})
         });
     
         if (!response.ok) {
             const errorText = await response.text();
-            throw new Error('Withdrawal failed: ' + errorText);
+            throw new Error('Transfer failed: ' + errorText);
         }
 
         const data = await response.json();
         if (data.status === 'success') {
             // Redirect to the receipt page with query parameters
-            const redirectUrl = `/atm/main/withdraw/receipt?amount=${data.amount}&accountNumber=${data.accountNumber}&transactionId=${data.transactionId}&transactionDate=${data.transactionDate}&status=${data.status}`;
+            const redirectUrl = `/atm/main/transfer/receipt?amount=${data.amount}&fromAccount=${data.fromAccount}&toAccount=${data.toAccount}&transactionId=${data.transactionId}&transactionDate=${data.transactionDate}&status=${data.status}`;
             window.location.href = redirectUrl;
         } else {
-            alert('Withdrawal failed: ' + data.message);
+            alert('Transfer failed: ' + data.message);
         }
     } catch (error) {
         console.error('Error sending number:', error);

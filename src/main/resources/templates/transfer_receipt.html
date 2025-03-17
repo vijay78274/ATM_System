@@ -10,7 +10,8 @@
     <div class="receipt-container" id="receipt">
         <h1>Transaction Receipt</h1>
         <p><strong>Transaction Type:</strong> Withdrawal</p>
-        <p><strong>Account Number:</strong> <span th:text="${accountNumber}"></span></p>
+        <p><strong>From Account Number:</strong> <span th:text="${fromAccount}"></span></p>
+        <p><strong>To Account Number:</strong> <span th:text="${toAccount}"></span></p>
         <p><strong>Status:</strong> <span th:text="${status}"></span></p>
         <p><strong>Amount:</strong> <span th:text="${amount}"></span></p>
         <p><strong>Transaction Date:</strong> <span th:text="${transactionDate}"></span></p>
